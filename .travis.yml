@@ -1,19 +1,20 @@
+--- 
+after_succes: 
+  - coveralls
+before_script: 
+  - "pip install docker-compose"
+  - "pip install coveralls"
+deploy: 
+  provider: script
+  script: "bash ci/travis-deploy.sh"
+  skip-cleanup: true
+  true: 
+    branch: master
 language: python
+python: 
+  - "3.8"
+script: 
+  - "docker-compose run app sh -c \"pytest test.py\""
+services: 
+  - docker
 sudo: true
-python:
-    - "3.8"
-services:
-    - docker 
-before_script:
-    - pip install docker-compose
-    - pip install coveralls
-script:
-    - docker-compose run app sh -c "pytest test.py"
-after_succes:
-    - coveralls
-deploy:
-    provider: script
-    skip-cleanup: true
-    script: bash ci/travis-deploy.sh
-    on:
-        branch: master
